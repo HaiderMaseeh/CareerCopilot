@@ -610,17 +610,38 @@
     grid-template-columns:1fr;
   }
 }
+.github-btn{
+  text-decoration:none;
+  color:white;
+  padding:8px 14px;
+  border-radius:8px;
+  border:1px solid var(--border2);
+  background:transparent;
+}
+
+.github-btn:hover{
+  background:var(--surface2);
+}
 </style>
 </head>
 <body>
 <div class="app">
-  <header>
-    <div class="logo">
-      <div class="logo-icon">⚡</div>
-      CareerCopilot
-    </div>
-    <div class="step-trail" id="stepTrail"></div>
-  </header>
+<header>
+  <div class="logo">
+    <div class="logo-icon">⚡</div>
+    CareerCopilot
+  </div>
+
+  <a
+    href="https://github.com/HaiderMaseeh/CareerCopilot"
+    target="_blank"
+    class="github-btn"
+  >
+    GitHub
+  </a>
+
+  <div class="step-trail" id="stepTrail"></div>
+</header>
 
   <main>
 
