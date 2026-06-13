@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerCopilot</title>
+<style>
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161e;
+    --bg3: #1a1e2a;
+    --surface: #1e2330;
+    --surface2: #252b3b;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #e8eaf0;
+    --text2: #8b90a0;
+    --text3: #555c72;
+    --accent: #6c7fff;
+    --accent2: #8b9fff;
+    --accent-bg: rgba(108,127,255,0.12);
+    --accent-border: rgba(108,127,255,0.3);
+    --green: #3ecf8e;
+    --green-bg: rgba(62,207,142,0.1);
+    --amber: #f5a623;
+    --amber-bg: rgba(245,166,35,0.1);
+    --red: #f56565;
+    --red-bg: rgba(245,101,101,0.1);
+    --teal: #38bdf8;
+    --teal-bg: rgba(56,189,248,0.1);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  /* ── Layout ─────────────────────────────────────── */
+  .app { display: flex; flex-direction: column; min-height: 100vh; }
+
+  header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .step-trail {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text3);
+  }
+
+  .step-trail span { color: var(--text2); }
+  .step-trail .sep { color: var(--text3); }
+
+  main {
+    flex: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    width: 100%;
+  }
+
+  /* ── Screens ─────────────────────────────────────── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── Typography ──────────────────────────────────── */
+  h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+  h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; }
+  h3 { font-size: 15px; font-weight: 500; }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .muted { color: var(--text2); }
+  .small { font-size: 13px; }
+
+  /* ── Cards ───────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+
+  .card + .card { margin-top: 1rem; }
+
+  /* ── Inputs ──────────────────────────────────────── */
+  label { font-size: 13px; font-weight: 500; color: var(--text2); display: block; margin-bottom: 6px; }
+
+  input[type="text"], textarea {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 15px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type="text"]:focus, textarea:focus {
+    border-color: var(--accent);
+    background: var(--bg2);
+  }
+
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+  /* ── Buttons ─────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+    font-family: var(--font);
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border2);
+  }
+
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+
+  .btn-mode {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+    width: 100%;
+    font-family: var(--font);
+  }
+
+  .btn-mode:hover { border-color: var(--accent); background: var(--surface2); }
+  .btn-mode.selected { border-color: var(--accent); background: var(--accent-bg); }
+  .btn-mode .mode-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .btn-mode .mode-desc { font-size: 13px; color: var(--text2); }
+  .btn-mode .mode-icon { font-size: 22px; margin-bottom: 6px; }
+
+  /* ── Upload zone ─────────────────────────────────── */
+  .upload-zone {
+    border: 1.5px dashed var(--border2);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: var(--accent-bg); }
+  .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-zone .uz-icon { font-size: 28px; margin-bottom: 8px; }
+  .upload-zone .uz-text { font-size: 14px; color: var(--text2); }
+  .upload-zone .uz-hint { font-size: 12px; color: var(--text3); margin-top: 4px; }
+  .upload-zone.has-file { border-color: var(--green); background: var(--green-bg); }
+  .upload-zone.has-file .uz-text { color: var(--green); }
+
+  /* ── Progress / Loading ──────────────────────────── */
+  .loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 3rem;
+    text-align: center;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 2.5px solid var(--border2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loader-label { font-size: 14px; color: var(--text2); }
+  .loader-sub { font-size: 12px; color: var(--text3); }
+
+  /* ── Skill pills ─────────────────────────────────── */
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+  .pill {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-weight: 500;
+  }
+
+  .pill-blue { background: var(--accent-bg); color: var(--accent2); border: 1px solid var(--accent-border); }
+  .pill-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(62,207,142,0.25); }
+  .pill-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
+  .pill-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(245,101,101,0.25); }
+  .pill-teal { background: var(--teal-bg); color: var(--teal); border: 1px solid rgba(56,189,248,0.25); }
+
+  /* ── Score ring ──────────────────────────────────── */
+  .score-ring {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+  }
+
+  .score-ring svg { transform: rotate(-90deg); }
+
+  .score-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-num { font-size: 20px; font-weight: 600; line-height: 1; }
+  .score-lbl { font-size: 9px; color: var(--text3); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* ── Analysis section ────────────────────────────── */
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 520px) { .analysis-grid { grid-template-columns: 1fr; } }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  /* ── Q&A ─────────────────────────────────────────── */
+  .qa-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .qa-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--border2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .qa-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  .qa-count { font-size: 12px; color: var(--text3); white-space: nowrap; }
+
+  .question-card {
+    background: var(--bg3);
+    border: 1px solid var(--accent-border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Interview ───────────────────────────────────── */
+  .interview-meta {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 99px;
+  }
+
+  .badge-diff-easy   { background: var(--green-bg); color: var(--green); }
+  .badge-diff-medium { background: var(--amber-bg); color: var(--amber); }
+  .badge-diff-hard   { background: var(--red-bg); color: var(--red); }
+  .badge-skill       { background: var(--teal-bg); color: var(--teal); }
+
+  .score-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  .score-high   { background: var(--green-bg); color: var(--green); }
+  .score-medium { background: var(--amber-bg); color: var(--amber); }
+  .score-low    { background: var(--red-bg);   color: var(--red); }
+
+  /* ── Roadmap ─────────────────────────────────────── */
+  .roadmap-skill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  .skill-header {
+    padding: 1rem 1.25rem;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .skill-header:hover { background: var(--bg3); }
+  .skill-title { font-weight: 600; font-size: 15px; }
+  .skill-weeks { font-size: 12px; color: var(--text2); }
+
+  .skill-body { display: none; padding: 1rem 1.25rem; border-top: 1px solid var(--border); }
+  .skill-body.open { display: block; }
+
+  .subtopic { margin-bottom: 1rem; }
+  .subtopic-name { font-weight: 500; color: var(--teal); font-size: 14px; margin-bottom: 6px; }
+  .concept-list { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+  .concept-pill { font-size: 11px; padding: 2px 8px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 99px; color: var(--text2); }
+
+  .resource-list { display: flex; flex-direction: column; gap: 4px; }
+
+  .resource-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .resource-type {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    min-width: 62px;
+    text-align: center;
+  }
+
+  .rt-youtube      { background: rgba(255,80,80,0.15); color: #ff6060; }
+  .rt-documentation{ background: rgba(108,127,255,0.15); color: var(--accent2); }
+  .rt-course       { background: rgba(62,207,142,0.15); color: var(--green); }
+  .rt-practice     { background: rgba(245,166,35,0.15); color: var(--amber); }
+
+  /* ── Projects ────────────────────────────────────── */
+  .project-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .project-title { font-weight: 600; font-size: 15px; }
+
+  .diff-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-weight: 500;
+  }
+
+  .diff-easy      { background: var(--green-bg); color: var(--green); }
+  .diff-medium, .diff-intermediate { background: var(--amber-bg); color: var(--amber); }
+  .diff-hard, .diff-advanced { background: var(--red-bg); color: var(--red); }
+
+  /* ── Report ──────────────────────────────────────── */
+  .report-scores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .score-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .score-card .val { font-size: 36px; font-weight: 600; line-height: 1.1; }
+  .score-card .lbl { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  .recommendation {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    border: 1px solid;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  .rec-hire  { background: var(--green-bg); border-color: rgba(62,207,142,0.3); color: var(--green); }
+  .rec-maybe { background: var(--amber-bg); border-color: rgba(245,166,35,0.3); color: var(--amber); }
+  .rec-no    { background: var(--red-bg);   border-color: rgba(245,101,101,0.3); color: var(--red); }
+
+  /* ── Divider ─────────────────────────────────────── */
+  .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+  /* ── Misc ────────────────────────────────────────── */
+  .stack { display: flex; flex-direction: column; gap: 1rem; }
+  .row   { display: flex; align-items: center; gap: 12px; }
+  .row-sb{ display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .mt1   { margin-top: 0.5rem; }
+  .mt2   { margin-top: 1rem; }
+  .mt3   { margin-top: 1.5rem; }
+  .mb2   { margin-bottom: 1rem; }
+
+  .feedback-strip {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 10px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .error-msg {
+    background: var(--red-bg);
+    border: 1px solid rgba(245,101,101,0.3);
+    color: var(--red);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  .chevron { transition: transform 0.2s; display: inline-block; }
+  .chevron.open { transform: rotate(180deg); }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">⚡</div>
+      CareerCopilot
+    </div>
+    <div class="step-trail" id="stepTrail"></div>
+  </header>
+
+  <main>
+
+    <!-- ── Screen 0: Setup ─────────────────────────── -->
+    <div class="screen active" id="screen-setup">
+      <div class="eyebrow">Get started</div>
+      <h1>Your AI-Powered Career Coach</h1>
+      <p class="muted mt1" style="font-size:15px;">Upload your resume and pick a target role. The assistant will analyze your skills and guide you from there.</p>
+
+      <div class="card mt3">
+        <div class="stack">
+          <div>
+            <label>Resume (PDF)</label>
+            <div class="upload-zone" id="uploadZone">
+              <input type="file" id="resumeFile" accept=".pdf">
+              <div class="uz-icon">📄</div>
+              <div class="uz-text" id="uploadText">Click to upload or drag & drop</div>
+              <div class="uz-hint">PDF files only · Max 10 MB</div>
+            </div>
+          </div>
+          <div>
+            <label for="roleInput">Target role</label>
+            <input type="text" id="roleInput" placeholder="e.g. Machine Learning Engineer, Data Scientist…">
+          </div>
+          <div>
+            <label>What would you like to do?</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <button class="btn-mode selected" data-mode="learning" onclick="selectMode('learning',this)">
+                <div class="mode-icon">🗺️</div>
+                <div class="mode-title">Learning Path</div>
+                <div class="mode-desc">Personalized roadmap to close skill gaps</div>
+              </button>
+              <button class="btn-mode" data-mode="interview" onclick="selectMode('interview',this)">
+                <div class="mode-icon">🎤</div>
+                <div class="mode-title">Mock Interview</div>
+                <div class="mode-desc">10-question adaptive technical session</div>
+              </button>
+            </div>
+          </div>
+          <div id="setupError"></div>
+          <button class="btn btn-primary" id="startBtn" onclick="startSession()">
+            Analyze resume →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Screen 1: Loading ───────────────────────── -->
+    <div class="screen" id="screen-loading">
+      <div class="loader">
+        <div class="spinner"></div>
+        <div class="loader-label" id="loaderLabel">Parsing resume…</div>
+        <div class="loader-sub" id="loaderSub">This takes about 10–20 seconds</div>
+      </div>
+    </div>
+
+    <!-- ── Screen 2: Analysis ─────────────────────── -->
+    <div class="screen" id="screen-analysis">
+      <div class="eyebrow">Resume analysis</div>
+      <h2 id="analysisRole"></h2>
+      <p class="muted small mt1" id="analysisSummary"></p>
+
+      <div class="card mt2" style="display:flex;align-items:center;gap:1.25rem;">
+        <div class="score-ring">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="33" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="7"/>
+            <circle id="scoreCircle" cx="40" cy="40" r="33" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-dasharray="207.3" stroke-dashoffset="207.3"/>
+          </svg>
+          <div class="score-text">
+            <div class="score-num" id="scoreNum">—</div>
+            <div class="score-lbl">score</div>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:13px;color:var(--text2);margin-bottom:4px;">Resume relevance score</div>
+          <div id="scoreBar" style="height:5px;background:var(--border2);border-radius:99px;overflow:hidden;margin-bottom:8px;">
+            <div id="scoreBarFill" style="height:100%;background:var(--accent);border-radius:99px;width:0%;transition:width 0.8s ease;"></div>
+          </div>
+          <div class="small muted" id="expLine"></div>
+        </div>
+      </div>
+
+      <div class="analysis-grid mt2">
+        <div class="card">
+          <div class="stat-label">Strong skills</div>
+          <div class="pills" id="strongSkills"></div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Skills to improve</div>
+          <div class="pills" id="weakSkills"></div>
+        </div>
+        <div class="card" style="grid-column:1/-1;">
+          <div class="stat-label">Recommended to learn</div>
+          <div class="pills" id="recSkills"></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <button class="btn btn-primary" id="analysisNextBtn" onclick="proceedFromAnalysis()">Continue →</button>
+    </div>
+
+    <!-- ── Screen 3: Assessment (Learning) ────────── -->
+    <div class="screen" id="screen-assessment">
+      <div class="eyebrow">Skill assessment</div>
+      <h2>A few quick questions</h2>
+      <p class="muted small mt1">Answer honestly — this helps tailor the learning path to your actual level.</p>
+
+      <div class="mt3" id="assessmentForm"></div>
+
+      <button class="btn btn-primary mt2" id="assessNextBtn" onclick="submitAssessment()">Generate my learning path →</button>
+    </div>
+
+    <!-- ── Screen 4: Generating loading ───────────── -->
+    <div class="screen" id="screen-generating">
+      <div class="loader">
+        <div class="spinner"></div>
+        <div class="loader-label">Building your personalized roadmap…</div>
+        <div class="loader-sub">Analysing gaps and matching resources · ~30 sec</div>
+      </div>
+    </div>
+
+    <!-- ── Screen 5: Learning Path ────────────────── -->
+    <div class="screen" id="screen-learning">
+      <div class="eyebrow">Your roadmap</div>
+      <div class="row-sb mb2">
+        <div>
+          <h2 id="lpRole"></h2>
+          <p class="small muted mt1" id="lpLevel"></p>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:24px;font-weight:600;" id="lpScore"></div>
+          <div class="small muted">job readiness</div>
+        </div>
+      </div>
+
+      <div class="card mb2">
+        <div class="stat-label">Priority skills</div>
+        <div class="pills mt1" id="lpPriority"></div>
+      </div>
+
+      <div id="lpRoadmap"></div>
+
+      <div class="divider"></div>
+      <h3 class="mb2">Recommended Projects</h3>
+      <div id="lpProjects"></div>
+
+      <button class="btn btn-ghost mt3" onclick="restart()">← Start over</button>
+    </div>
+
+    <!-- ── Screen 6: Interview ─────────────────────── -->
+    <div class="screen" id="screen-interview">
+      <div class="eyebrow">Mock interview</div>
+      <h2 id="ivRole"></h2>
+
+      <div class="mt2">
+        <div class="qa-progress">
+          <div class="qa-bar"><div class="qa-bar-fill" id="ivBar"></div></div>
+          <div class="qa-count" id="ivCount">1 / 10</div>
+        </div>
+
+        <div class="interview-meta" id="ivMeta"></div>
+
+        <div class="question-card" id="ivQuestion">Loading first question…</div>
+
+        <div id="ivFeedback"></div>
+
+        <label class="mt2" style="margin-top:1rem;" for="ivAnswer">Your answer</label>
+        <textarea id="ivAnswer" rows="5" placeholder="Type your answer here…"></textarea>
+
+        <div id="ivError"></div>
+        <button class="btn btn-primary mt2" id="ivSubmitBtn" onclick="submitAnswer()" style="margin-top:0.75rem;">
+          Submit answer →
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Screen 7: Report ────────────────────────── -->
+    <div class="screen" id="screen-report">
+      <div class="eyebrow">Interview complete</div>
+      <h2>Your performance report</h2>
+
+      <div class="report-scores mt3">
+        <div class="score-card">
+          <div class="val" id="rTech">—</div>
+          <div class="lbl">Technical score</div>
+        </div>
+        <div class="score-card">
+          <div class="val" id="rComm">—</div>
+          <div class="lbl">Communication score</div>
+        </div>
+      </div>
+
+      <div id="rRec"></div>
+
+      <div class="card mb2">
+        <div class="stat-label" style="margin-bottom:8px;">Feedback</div>
+        <div id="rFeedback" style="font-size:14px;color:var(--text2);line-height:1.7;"></div>
+      </div>
+
+      <div class="analysis-grid">
+        <div class="card">
+          <div class="stat-label">Strengths</div>
+          <div id="rStrengths" class="mt1"></div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Areas to improve</div>
+          <div id="rWeaknesses" class="mt1"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-ghost mt3" onclick="restart()">← Start over</button>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const API = 'http://localhost:8000';
+let sessionId = null;
+let selectedMode = 'learning';
+let assessmentQuestions = [];
+let currentQuestion = null;
+let questionNumber = 1;
+
+// ── Utilities ────────────────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setTrail(...steps) {
+  const t = document.getElementById('stepTrail');
+  t.innerHTML = steps.map((s, i) =>
+    i < steps.length - 1
+      ? `<span>${s}</span><span class="sep">›</span>`
+      : `<span style="color:var(--text)">${s}</span>`
+  ).join('');
+}
+
+function el(id) { return document.getElementById(id); }
+
+function makePill(text, type = 'blue') {
+  const d = document.createElement('span');
+  d.className = `pill pill-${type}`;
+  d.textContent = text;
+  return d;
+}
+
+function makeList(items) {
+  return items.map(i => `<div style="display:flex;gap:6px;align-items:flex-start;margin-bottom:4px;font-size:13px;color:var(--text2);">
+    <span style="color:var(--accent);margin-top:1px;">•</span><span>${i}</span></div>`).join('');
+}
+
+// ── Mode selection ────────────────────────────────────────────────────────────
+function selectMode(mode, btn) {
+  selectedMode = mode;
+  document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+// ── Upload zone ───────────────────────────────────────────────────────────────
+const uz = el('uploadZone');
+const rf = el('resumeFile');
+
+rf.addEventListener('change', () => {
+  if (rf.files[0]) {
+    uz.classList.add('has-file');
+    el('uploadText').textContent = '✓ ' + rf.files[0].name;
+  }
+});
+
+uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag'); });
+uz.addEventListener('dragleave', () => uz.classList.remove('drag'));
+uz.addEventListener('drop', e => {
+  e.preventDefault();
+  uz.classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    rf.files = dt.files;
+    uz.classList.add('has-file');
+    el('uploadText').textContent = '✓ ' + file.name;
+  }
+});
+
+// ── Start session ─────────────────────────────────────────────────────────────
+async function startSession() {
+  const role = el('roleInput').value.trim();
+  const file = rf.files[0];
+  el('setupError').innerHTML = '';
+
+  if (!file) { el('setupError').innerHTML = '<div class="error-msg">Please upload your resume PDF.</div>'; return; }
+  if (!role)  { el('setupError').innerHTML = '<div class="error-msg">Please enter your target role.</div>'; return; }
+
+  show('loading');
+  setTrail('Setup', 'Analyzing');
+  el('loaderLabel').textContent = 'Parsing resume and analyzing skills…';
+
+  const form = new FormData();
+  form.append('role', role);
+  form.append('resume', file);
+
+  try {
+    const res = await fetch(`${API}/api/start`, { method: 'POST', body: form });
+    if (!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+    sessionId = data.session_id;
+    renderAnalysis(data, role);
+    show('analysis');
+    setTrail('Setup', 'Analysis');
+  } catch (e) {
+    show('setup');
+    el('setupError').innerHTML = `<div class="error-msg">⚠ ${e.message}</div>`;
+  }
+}
+
+// ── Render analysis ───────────────────────────────────────────────────────────
+function renderAnalysis(data, role) {
+  const a = data.analysis;
+  el('analysisRole').textContent = role;
+  el('analysisSummary').textContent = a.summary || '';
+  el('expLine').textContent = `${data.experience_years} year${data.experience_years !== 1 ? 's' : ''} of experience · ${data.skills.length} skills found`;
+
+  el('scoreNum').textContent = a.resume_score;
+  el('scoreBarFill').style.width = a.resume_score + '%';
+  const circ = el('scoreCircle');
+  const r = 33, circ_len = 2 * Math.PI * r;
+  circ.style.strokeDashoffset = circ_len - (circ_len * a.resume_score / 100);
+  circ.style.stroke = a.resume_score >= 70 ? 'var(--green)' : a.resume_score >= 45 ? 'var(--amber)' : 'var(--red)';
+
+  const strong = el('strongSkills'); strong.innerHTML = '';
+  (a.strong_skills || []).forEach(s => strong.appendChild(makePill(s, 'green')));
+
+  const weak = el('weakSkills'); weak.innerHTML = '';
+  (a.weak_skills || []).forEach(s => weak.appendChild(makePill(s, 'amber')));
+
+  const rec = el('recSkills'); rec.innerHTML = '';
+  (a.recommended_skills || []).forEach(s => rec.appendChild(makePill(s, 'teal')));
+
+  el('analysisNextBtn').textContent = selectedMode === 'learning'
+    ? 'Continue to assessment →'
+    : 'Start mock interview →';
+}
+
+// ── Proceed from analysis ─────────────────────────────────────────────────────
+async function proceedFromAnalysis() {
+  if (selectedMode === 'learning') {
+    show('loading');
+    el('loaderLabel').textContent = 'Generating assessment questions…';
+    el('loaderSub').textContent = '';
+    try {
+      const res = await fetch(`${API}/api/learning/questions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId })
+      });
+      const data = await res.json();
+      assessmentQuestions = data.questions;
+      renderAssessment(data.questions);
+      show('assessment');
+      setTrail('Setup', 'Analysis', 'Assessment');
+    } catch (e) {
+      show('analysis');
+    }
+  } else {
+    startInterview();
+  }
+}
+
+// ── Assessment form ───────────────────────────────────────────────────────────
+function renderAssessment(questions) {
+  const form = el('assessmentForm');
+  form.innerHTML = '';
+  questions.forEach((q, i) => {
+    const qn = i + 1;
+    const wrap = document.createElement('div');
+    wrap.style.marginBottom = '1.25rem';
+    wrap.innerHTML = `
+      <div style="font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;">Question ${qn} of ${questions.length}</div>
+      <div class="question-card" style="margin-bottom:8px;">${q}</div>
+      <textarea id="ans_${i}" rows="3" placeholder="Your answer…"></textarea>
+    `;
+    form.appendChild(wrap);
+  });
+}
+
+// ── Submit assessment ─────────────────────────────────────────────────────────
+async function submitAssessment() {
+  const answers = {};
+  assessmentQuestions.forEach((q, i) => {
+    answers[q] = el(`ans_${i}`).value.trim() || '(no answer)';
+  });
+
+  show('generating');
+  setTrail('Setup', 'Analysis', 'Assessment', 'Roadmap');
+
+  try {
+    const res = await fetch(`${API}/api/learning/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, answers })
+    });
+    const data = await res.json();
+    renderLearningPath(data);
+    show('learning');
+  } catch (e) {
+    show('assessment');
+  }
+}
+
+// ── Render learning path ──────────────────────────────────────────────────────
+function renderLearningPath(data) {
+  el('lpRole').textContent = el('roleInput').value;
+  el('lpLevel').textContent = 'Current level: ' + (data.current_level || '—');
+  el('lpScore').textContent = (data.job_readiness_score || 0) + '/100';
+
+  const prio = el('lpPriority'); prio.innerHTML = '';
+  (data.priority_skills || []).forEach(s => prio.appendChild(makePill(s, 'blue')));
+
+  const rm = el('lpRoadmap'); rm.innerHTML = '';
+  (data.roadmap || []).forEach((skill, si) => {
+    const div = document.createElement('div');
+    div.className = 'roadmap-skill';
+    const bodyId = `skill-body-${si}`;
+    div.innerHTML = `
+      <div class="skill-header" onclick="toggleSkill('${bodyId}', this)">
+        <div>
+          <div class="skill-title">${skill.skill}</div>
+          <div class="skill-weeks">${skill.estimated_weeks} week${skill.estimated_weeks !== 1 ? 's' : ''}</div>
+        </div>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="skill-body ${si === 0 ? 'open' : ''}" id="${bodyId}">
+        ${(skill.subtopics || []).map(t => `
+          <div class="subtopic">
+            <div class="subtopic-name">${t.topic} <span style="color:var(--text3);font-size:11px;">· ${t.estimated_days}d</span></div>
+            <div class="concept-list">${(t.concepts || []).map(c => `<span class="concept-pill">${c}</span>`).join('')}</div>
+            <div class="resource-list">${(t.resources || []).map(r => `
+              <div class="resource-item">
+                <span class="resource-type rt-${(r.type||'').toLowerCase().replace(/[^a-z]/g,'')}">${r.type}</span>
+                <span>${r.title}</span>
+              </div>`).join('')}
+            </div>
+          </div>
+        `).join('<hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">')}
+      </div>
+    `;
+    rm.appendChild(div);
+    if (si === 0) {
+      const firstChev = div.querySelector('.skill-header .chevron');
+      if (firstChev) firstChev.classList.add('open');
+    }
+  });
+
+  const proj = el('lpProjects'); proj.innerHTML = '';
+  (data.projects || []).forEach(p => {
+    const diff = (p.difficulty || '').toLowerCase();
+    const d = document.createElement('div');
+    d.className = 'project-card';
+    d.innerHTML = `
+      <div class="project-header">
+        <div class="project-title">${p.title}</div>
+        <span class="diff-badge diff-${diff}">${p.difficulty}</span>
+      </div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:8px;">${p.description}</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <span style="font-size:12px;color:var(--text3);">⏱ ${p.estimated_weeks}w</span>
+        ${(p.skills_used || []).map(s => `<span class="pill pill-teal">${s}</span>`).join('')}
+      </div>
+    `;
+    proj.appendChild(d);
+  });
+}
+
+function toggleSkill(bodyId, header) {
+  const body = el(bodyId);
+  const chev = header.querySelector('.chevron');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+// ── Start interview ───────────────────────────────────────────────────────────
+async function startInterview() {
+  show('loading');
+  el('loaderLabel').textContent = 'Setting up your mock interview…';
+  el('loaderSub').textContent = '';
+  setTrail('Setup', 'Analysis', 'Interview');
+
+  try {
+    const res = await fetch(`${API}/api/interview/start`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId })
+    });
+    const data = await res.json();
+    currentQuestion = data;
+    renderQuestion(data);
+    show('interview');
+    el('ivRole').textContent = el('roleInput').value;
+  } catch (e) {
+    show('analysis');
+  }
+}
+
+// ── Render question ───────────────────────────────────────────────────────────
+function renderQuestion(data) {
+  const qn = data.question_number || questionNumber;
+  const max = data.max_questions || 10;
+  el('ivBar').style.width = ((qn - 1) / max * 100) + '%';
+  el('ivCount').textContent = `${qn} / ${max}`;
+
+  const diff = (data.difficulty || 'easy').toLowerCase();
+  el('ivMeta').innerHTML = `
+    <span class="meta-badge badge-skill">${data.current_skill || ''}</span>
+    <span class="meta-badge badge-diff-${diff}">${diff}</span>
+  `;
+
+  el('ivQuestion').textContent = data.question;
+  el('ivAnswer').value = '';
+  el('ivFeedback').innerHTML = '';
+  el('ivError').innerHTML = '';
+  el('ivSubmitBtn').disabled = false;
+  el('ivSubmitBtn').textContent = 'Submit answer →';
+}
+
+// ── Submit answer ─────────────────────────────────────────────────────────────
+async function submitAnswer() {
+  const answer = el('ivAnswer').value.trim();
+  el('ivError').innerHTML = '';
+  if (!answer) { el('ivError').innerHTML = '<div class="error-msg">Please type an answer.</div>'; return; }
+
+  el('ivSubmitBtn').disabled = true;
+  el('ivSubmitBtn').textContent = 'Evaluating…';
+
+  try {
+    const res = await fetch(`${API}/api/interview/answer`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, answer })
+    });
+    const data = await res.json();
+    const ev = data.evaluation;
+    const score = ev.score;
+    const cls = score >= 7 ? 'score-high' : score >= 4 ? 'score-medium' : 'score-low';
+
+    el('ivFeedback').innerHTML = `
+      <div class="score-indicator ${cls}">Score: ${score}/10</div>
+      ${ev.strengths?.length ? `<div class="feedback-strip">✓ ${ev.strengths.join(' · ')}</div>` : ''}
+      ${ev.weaknesses?.length ? `<div class="feedback-strip" style="border-left-color:var(--amber);">⚠ ${ev.weaknesses.join(' · ')}</div>` : ''}
+    `;
+
+    if (data.done) {
+      renderReport(data.report);
+      setTimeout(() => { show('report'); setTrail('Setup', 'Analysis', 'Interview', 'Report'); }, 1200);
+    } else {
+      setTimeout(() => { currentQuestion = data; renderQuestion(data); }, 1000);
+    }
+  } catch (e) {
+    el('ivError').innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
+    el('ivSubmitBtn').disabled = false;
+    el('ivSubmitBtn').textContent = 'Submit answer →';
+  }
+}
+
+// ── Render report ─────────────────────────────────────────────────────────────
+function renderReport(r) {
+  el('rTech').textContent = (r.technical_score || 0) + '/10';
+  el('rComm').textContent = (r.communication_score || 0) + '/10';
+
+  const rec = (r.hiring_recommendation || '').toLowerCase();
+  const recClass = rec.includes('hire') && !rec.includes('not') ? 'rec-hire' : rec.includes('consider') ? 'rec-maybe' : 'rec-no';
+  el('rRec').innerHTML = `<div class="recommendation ${recClass}">Recommendation: ${r.hiring_recommendation}</div>`;
+
+  el('rFeedback').textContent = r.overall_feedback || '';
+  el('rStrengths').innerHTML = makeList(r.strengths || []);
+  el('rWeaknesses').innerHTML = makeList(r.weaknesses || []);
+}
+
+// ── Restart ───────────────────────────────────────────────────────────────────
+function restart() {
+  sessionId = null;
+  assessmentQuestions = [];
+  el('resumeFile').value = '';
+  el('uploadText').textContent = 'Click to upload or drag & drop';
+  el('uploadZone').classList.remove('has-file');
+  el('roleInput').value = '';
+  el('setupError').innerHTML = '';
+  show('setup');
+  setTrail();
+}
+</script>
+</body>
+</html>
