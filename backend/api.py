@@ -20,7 +20,7 @@ from interview import (
     generate_report,
 )
 
-app = FastAPI(title="AI Career Assistant API")
+app = FastAPI(title="CareerCopilot API")
 
 app.add_middleware(
     CORSMiddleware,
