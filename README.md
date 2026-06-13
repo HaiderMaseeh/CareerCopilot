@@ -33,10 +33,10 @@ The `skill_analysis` node acts as the router — it reads the resume and decides
 | Layer | Technology |
 |---|---|
 | Agent Framework | LangGraph |
-| LLM Provider | Groq (LLaMA 3) |
+| LLM Provider | Groq  |
 | Backend | FastAPI (Python) |
 | Frontend | HTML, CSS, JavaScript |
-| Deployment | Railway (backend), Vercel (frontend) |
+| Deployment | Render (backend), Vercel (frontend) |
 
 
 
