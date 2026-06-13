@@ -525,6 +525,91 @@
 
   .chevron { transition: transform 0.2s; display: inline-block; }
   .chevron.open { transform: rotate(180deg); }
+  .hero{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.hero h1{
+  font-size:42px;
+  margin-bottom:12px;
+}
+
+.hero-subtitle{
+  max-width:650px;
+  margin:auto;
+  color:var(--text2);
+}
+
+.hero-badges{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+
+.github-btn{
+  text-decoration:none;
+  color:white;
+  padding:8px 14px;
+  border-radius:8px;
+  border:1px solid var(--border2);
+}
+
+.github-btn:hover{
+  background:var(--surface2);
+}
+
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.feature-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:20px;
+}
+
+.feature-card p{
+  color:var(--text2);
+  font-size:13px;
+}
+
+.stats{
+  display:flex;
+  gap:15px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:30px;
+}
+
+.stat-box{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:20px;
+  min-width:180px;
+  text-align:center;
+}
+
+.footer{
+  text-align:center;
+  padding:40px;
+  color:var(--text3);
+  border-top:1px solid var(--border);
+  margin-top:50px;
+}
+
+@media(max-width:700px){
+  .feature-grid{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
 <body>
@@ -542,9 +627,27 @@
     <!-- ── Screen 0: Setup ─────────────────────────── -->
     <div class="screen active" id="screen-setup">
       <div class="eyebrow">Get started</div>
-      <h1>Your AI-Powered Career Coach</h1>
-      <p class="muted mt1" style="font-size:15px;">Upload your resume and pick a target role. The assistant will analyze your skills and guide you from there.</p>
+      <div class="hero">
 
+<div class="eyebrow">
+AI Career Development Platform
+</div>
+
+<h1>CareerCopilot</h1>
+
+<p class="hero-subtitle">
+Analyze your resume, identify skill gaps,
+generate personalized learning paths,
+and practice interviews with AI.
+</p>
+
+<div class="hero-badges">
+<span class="pill pill-blue">Resume Analysis</span>
+<span class="pill pill-green">Learning Paths</span>
+<span class="pill pill-teal">Mock Interviews</span>
+</div>
+
+</div>
       <div class="card mt3">
         <div class="stack">
           <div>
