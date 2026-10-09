@@ -73,7 +73,7 @@ Return ONLY valid JSON.
     try:
 
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-120b",
             response_format={
                 "type": "json_object"
             },
@@ -178,7 +178,7 @@ Rules:
 """
 
     response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         messages=[
             {
                 "role": "user",
@@ -237,7 +237,7 @@ Generate JSON:
     try:
 
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-120b",
             response_format={
                 "type": "json_object"
             },
